@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Boggle solver</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <h1>Web Workers performance test</h1>
+
+    <div class="controls" tabindex="0">
+      <h2>Consecutively find all prime numbers up to the specified values</h2>
+      <form id="toolbar">
+        <div>
+          <div id="sizing">
+            <label for="size">Number of cells/rows</label>
+            <input
+              type="number"
+              class="tool"
+              id="size"
+              min="4"
+              max="12"
+              value="4"
+            />
+            <button type="submit" id="resize">Resize</button>
+          </div>
+        </div>
+      </form>
+      <form id="form">
+        <table id="table">
+          <tr>
+            <td>
+              <input class="input" value="" required />
+            </td>
+            <td>
+              <input class="input" value="" required />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input class="input" value="" required />
+            </td>
+            <td>
+              <input class="input" value="" required />
+            </td>
+          </tr>
+        </table>
+        <button type="submit" id="solve">Solve</button>
+      </form>
+      <div id="result"></div>
+    </div>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="solver.js"></script>
+    <script type="module" src="trie.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+.input {
+  text-transform: uppercase;
+}
+
+#result {
+  word-break: break-word;
+}
