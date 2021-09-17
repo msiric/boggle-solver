@@ -1,38 +1,10 @@
 import { findWords } from "./solver.js";
+import { list } from "./dictionary.js";
+import { Trie } from "./trie.js";
 
 const CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
 
-const test = [
-  ["f", "x", "i", "e"],
-  ["a", "m", "l", "o"],
-  ["e", "w", "b", "x"],
-  ["a", "s", "t", "u"],
-];
-const test2 = [
-  ["f", "x", "i", "e", "a"],
-  ["a", "m", "l", "o", "u"],
-  ["e", "w", "b", "x", "i"],
-  ["a", "s", "t", "u", "e"],
-  ["s", "t", "h", "g", "n"],
-];
-const test3 = [
-  ["f", "x", "i", "e", "a", "o"],
-  ["a", "m", "l", "o", "u", "e"],
-  ["e", "w", "b", "x", "i", "o"],
-  ["a", "s", "t", "u", "e", " i"],
-  ["s", "t", "h", "g", "n", "u"],
-  ["d", "f", "a", "p", "e", "v"],
-];
-const test4 = [
-  ["f", "x", "i", "e", "a", "o", "a", "p"],
-  ["a", "m", "l", "o", "u", "e", "e", "x"],
-  ["e", "w", "b", "x", "i", "o", "j", "m"],
-  ["a", "s", "t", "u", "e", " i", "r", "i"],
-  ["s", "t", "h", "g", "n", "u", "k", "e"],
-  ["d", "f", "a", "p", "e", "v", "x", "r"],
-  ["d", "f", "a", "p", "e", "v", "i", "j"],
-  ["s", "l", "n", "e", "a", "r", "e", "s"],
-];
+export let trie;
 
 const handleSubmit = (e) => {
   e.preventDefault();
@@ -49,6 +21,10 @@ const handleSubmit = (e) => {
   }
   const words = findWords(matrix);
   result.innerHTML = words;
+  /*   const sorted = words.sort((a, b) => {
+    return b.length - a.length;
+  });
+  console.log(sorted[0]); */
 };
 
 const resizeGrid = (e) => {
@@ -80,8 +56,17 @@ const randomizeGrid = () => {
   }
 };
 
+const instantiateTrie = () => {
+  trie = new Trie();
+
+  for (let item of list) {
+    trie.insert(item);
+  }
+};
+
 const initializeApp = (e) => {
   resizeGrid(e);
+  instantiateTrie();
   const form = document.querySelector("#form");
   const toolbar = document.querySelector("#toolbar");
   toolbar.onsubmit = resizeGrid;

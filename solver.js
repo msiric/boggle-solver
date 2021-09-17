@@ -1,11 +1,7 @@
-import { list } from "./dictionary.js";
-import { Trie } from "./trie.js";
+import { trie } from "./main.js";
 
-const trie = new Trie();
-
-for (let item of list) {
-  trie.insert(item);
-}
+const inputs = document.getElementsByClassName("input");
+const size = document.getElementById("size").valueAsNumber;
 
 const movements = (i, j) => [
   { row: i, column: j + 1, move: "RIGHT" },
@@ -20,14 +16,17 @@ const movements = (i, j) => [
 
 export const findWords = (matrix) => {
   const words = [];
+  const map = {};
   const iterate = (i, j, word, visited) => {
     if (matrix[i] && matrix[i][j]) {
       if (!visited[`${i}_${j}`]) {
+        inputs[j + size * i].classList.toggle(".highlight");
         visited[`${i}_${j}`] = true;
         word += matrix[i][j];
         if (trie.find(word).length) {
-          if (trie.contains(word)) {
+          if (trie.contains(word) && !map[word]) {
             words.push(word);
+            map[word] = true;
           }
           const moves = movements(i, j);
           for (let move of moves) {

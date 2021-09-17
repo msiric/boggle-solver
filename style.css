@@ -1,7 +1,16 @@
+#table {
+  max-width: 1200px;
+}
+
 .input {
   text-transform: uppercase;
+  max-width: 20px;
 }
 
 #result {
   word-break: break-word;
+}
+
+.highlight {
+  background-color: red;
 }
