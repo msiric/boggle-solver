@@ -2,9 +2,20 @@
   max-width: 1200px;
 }
 
+#table td {
+  position: relative;
+}
+
 .input {
   text-transform: uppercase;
   max-width: 20px;
+}
+
+.span {
+  position: absolute;
+  right: 5px;
+  color: white;
+  font-weight: bold;
 }
 
 #result {
@@ -13,4 +24,8 @@
 
 .highlight {
   background-color: red;
+}
+
+.success {
+  background-color: green;
 }

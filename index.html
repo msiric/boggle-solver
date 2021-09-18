@@ -11,10 +11,9 @@
   </head>
 
   <body>
-    <h1>Web Workers performance test</h1>
+    <h1>Boggle solver algorithm</h1>
 
     <div class="controls" tabindex="0">
-      <h2>Consecutively find all prime numbers up to the specified values</h2>
       <form id="toolbar">
         <div>
           <div id="sizing">
@@ -23,7 +22,7 @@
               type="number"
               class="tool"
               id="size"
-              min="4"
+              min="2"
               max="48"
               value="4"
             />
@@ -32,24 +31,7 @@
         </div>
       </form>
       <form id="form">
-        <table id="table">
-          <tr>
-            <td>
-              <input class="input" value="" required />
-            </td>
-            <td>
-              <input class="input" value="" required />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input class="input" value="" required />
-            </td>
-            <td>
-              <input class="input" value="" required />
-            </td>
-          </tr>
-        </table>
+        <table id="table"></table>
         <button type="submit" id="solve">Solve</button>
       </form>
       <div id="result"></div>

@@ -6,9 +6,12 @@ const CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
 
 export let trie;
 
-const handleSubmit = (e) => {
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+const handleSubmit = async (e) => {
   e.preventDefault();
   const inputs = document.querySelectorAll(".input");
+  const span = document.querySelectorAll(".span");
   const result = document.getElementById("result");
   const size = document.getElementById("size").valueAsNumber;
   const matrix = [];
@@ -19,12 +22,33 @@ const handleSubmit = (e) => {
     }
     matrix.push(row);
   }
-  const words = findWords(matrix);
+  const { words, steps } = findWords(matrix);
   result.innerHTML = words;
-  /*   const sorted = words.sort((a, b) => {
-    return b.length - a.length;
-  });
-  console.log(sorted[0]); */
+  for (let step of steps) {
+    const { x, y } = step;
+    const selection = y + size * x;
+    await delay(0);
+    if (span[selection].innerHTML === "") {
+      span[selection].innerHTML = step.counter;
+    }
+    inputs[selection].classList.add("highlight");
+    if (step.isWord) {
+      const highlights = document.getElementsByClassName("highlight");
+      for (let highlight of highlights) {
+        highlight.classList.add("success");
+      }
+      await delay(1000);
+      for (let highlight of highlights) {
+        highlight.classList.remove("success");
+      }
+    } else {
+      if (step.action === "remove") {
+        await delay(0);
+        inputs[selection].classList.remove("highlight");
+        span[selection].innerHTML = "";
+      }
+    }
+  }
 };
 
 const resizeGrid = (e) => {
@@ -37,9 +61,12 @@ const resizeGrid = (e) => {
     for (let j = 0; j < size; j++) {
       const data = document.createElement("td");
       const input = document.createElement("input");
+      const span = document.createElement("span");
       input.required = true;
       input.classList.add("input");
+      span.classList.add("span");
       data.appendChild(input);
+      data.appendChild(span);
       row.appendChild(data);
     }
     table.appendChild(row);
