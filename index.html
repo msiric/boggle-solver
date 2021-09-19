@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width" />
 
     <title>Boggle solver</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <h1>Boggle solver algorithm</h1>
-
-    <div class="controls" tabindex="0">
+    <div class="content" tabindex="0">
       <form id="toolbar">
         <div>
           <div id="sizing">
@@ -23,10 +27,10 @@
               class="tool"
               id="size"
               min="2"
-              max="48"
+              max="8"
               value="4"
             />
-            <button type="submit" id="resize">Resize</button>
+            <button type="submit" id="resize">Randomize</button>
           </div>
         </div>
       </form>
@@ -34,7 +38,10 @@
         <table id="table"></table>
         <button type="submit" id="solve">Solve</button>
       </form>
-      <div id="result"></div>
+      <div id="result">
+        <p class="label">Found words</p>
+        <table id="list"></table>
+      </div>
     </div>
     <script type="module" src="main.js"></script>
     <script type="module" src="solver.js"></script>
