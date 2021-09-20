@@ -16,8 +16,11 @@
   </head>
 
   <body>
-    <h1>Boggle solver algorithm</h1>
+    <h1>Boggle solver</h1>
     <div class="content" tabindex="0">
+      <p class="description">
+        Words are matched against the Scrabble dictionary
+      </p>
       <form id="toolbar">
         <div>
           <div id="sizing">
@@ -35,7 +38,64 @@
         </div>
       </form>
       <form id="form">
-        <table id="table"></table>
+        <table id="table">
+          <tr>
+            <td>
+              <input class="cell" value="I" required />
+            </td>
+            <td>
+              <input class="cell" value="N" required />
+            </td>
+            <td>
+              <input class="cell" value="I" required />
+            </td>
+            <td>
+              <input class="cell" value="T" required />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input class="cell" value="I" required />
+            </td>
+            <td>
+              <input class="cell" value="A" required />
+            </td>
+            <td>
+              <input class="cell" value="L" required />
+            </td>
+            <td>
+              <input class="cell" value="I" required />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input class="cell" value="Z" required />
+            </td>
+            <td>
+              <input class="cell" value="I" required />
+            </td>
+            <td>
+              <input class="cell" value="N" required />
+            </td>
+            <td>
+              <input class="cell" value="G" required />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input class="cell" value="G" required />
+            </td>
+            <td>
+              <input class="cell" value="A" required />
+            </td>
+            <td>
+              <input class="cell" value="M" required />
+            </td>
+            <td>
+              <input class="cell" value="E" required />
+            </td>
+          </tr>
+        </table>
         <button type="submit" id="solve">Solve</button>
       </form>
       <div id="result">

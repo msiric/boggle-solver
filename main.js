@@ -4,17 +4,27 @@ import { Trie } from "./trie.js";
 
 const CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
 
-const table = document.getElementById("table");
-const size = document.getElementById("size");
-const resize = document.getElementById("resize");
-const solve = document.getElementById("solve");
+const REFERENCES = {
+  table: "",
+  size: "",
+  resize: "",
+  solve: "",
+  cells: "",
+  counters: "",
+  result: "",
+  list: "",
+  length: "",
+  inputs: "",
+  highlights: "",
+};
 
 export let trie;
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const toggleAttributes = () => {
-  const inputs = document.querySelectorAll("input");
+  updateReferences();
+  const { inputs } = REFERENCES;
   solve.disabled = !solve.disabled;
   resize.disabled = !resize.disabled;
   for (let input of inputs) {
@@ -22,17 +32,18 @@ const toggleAttributes = () => {
   }
 };
 
-const visualizeSteps = async (steps, inputs, spans, size) => {
+const visualizeSteps = async (steps, inputs, counters, size) => {
   for (let step of steps) {
     const { x, y } = step;
     const selection = y + size * x;
     await delay(0);
-    if (spans[selection].innerHTML === "") {
-      spans[selection].innerHTML = step.counter;
+    if (counters[selection].innerHTML === "") {
+      counters[selection].innerHTML = step.counter;
     }
     inputs[selection].classList.add("highlight");
     if (step.isWord) {
-      const highlights = document.getElementsByClassName("highlight");
+      updateReferences();
+      const { highlights } = REFERENCES;
       for (let highlight of highlights) {
         highlight.classList.add("success");
       }
@@ -44,7 +55,7 @@ const visualizeSteps = async (steps, inputs, spans, size) => {
       if (step.action === "remove") {
         await delay(0);
         inputs[selection].classList.remove("highlight");
-        spans[selection].innerHTML = "";
+        counters[selection].innerHTML = "";
       }
     }
   }
@@ -72,26 +83,19 @@ const createTable = (words, table) => {
   }
 };
 
-const handleChange = () => {
-  resize.innerHTML = "Resize";
-};
-
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const inputs = document.querySelectorAll(".input");
-  const spans = document.querySelectorAll(".span");
-  const result = document.getElementById("result");
-  const list = document.getElementById("list");
-  const size = document.getElementById("table").children.length;
+  updateReferences();
+  const { cells, counters, result, list } = REFERENCES;
+  const { length } = REFERENCES.table.children;
   result.style.display = "none";
-  resize.innerHTML = "Resize";
   list.innerHTML = "";
   toggleAttributes();
   const matrix = [];
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < length; i++) {
     const row = [];
-    for (let j = 0; j < size; j++) {
-      row.push(inputs[j + size * i].value.toLowerCase());
+    for (let j = 0; j < length; j++) {
+      row.push(cells[j + length * i].value.toLowerCase());
     }
     matrix.push(row);
   }
@@ -99,12 +103,12 @@ const handleSubmit = async (e) => {
   const sorted = words.sort((a, b) => b.length - a.length);
   createTable(sorted, list);
   result.style.display = "block";
-  await visualizeSteps(steps, inputs, spans, size);
+  await visualizeSteps(steps, cells, counters, length);
 };
 
 const resizeGrid = (e) => {
   e.preventDefault();
-  resize.innerHTML = "Randomize";
+  if (!size.value) return;
   table.innerHTML = "";
   for (let i = 0; i < size.valueAsNumber; i++) {
     const row = document.createElement("tr");
@@ -113,8 +117,9 @@ const resizeGrid = (e) => {
       const input = document.createElement("input");
       const span = document.createElement("span");
       input.required = true;
-      input.classList.add("input");
-      span.classList.add("span");
+      input.setAttribute("maxLength", 1);
+      input.classList.add("cell");
+      span.classList.add("counter");
       data.appendChild(input);
       data.appendChild(span);
       row.appendChild(data);
@@ -125,9 +130,10 @@ const resizeGrid = (e) => {
 };
 
 const randomizeGrid = () => {
-  const inputs = document.querySelectorAll(".input");
-  for (let input of inputs) {
-    input.value = CHARACTERS.charAt(
+  updateReferences();
+  const { cells } = REFERENCES;
+  for (let cell of cells) {
+    cell.value = CHARACTERS.charAt(
       Math.floor(Math.random() * CHARACTERS.length)
     );
   }
@@ -141,14 +147,27 @@ const instantiateTrie = () => {
   }
 };
 
+const updateReferences = () => {
+  REFERENCES.table = document.getElementById("table");
+  REFERENCES.size = document.getElementById("size");
+  REFERENCES.resize = document.getElementById("resize");
+  REFERENCES.solve = document.getElementById("solve");
+  REFERENCES.cells = document.querySelectorAll(".cell");
+  REFERENCES.counters = document.querySelectorAll(".counter");
+  REFERENCES.result = document.getElementById("result");
+  REFERENCES.list = document.getElementById("list");
+  REFERENCES.inputs = document.querySelectorAll("input");
+  REFERENCES.highlights = document.getElementsByClassName("highlight");
+};
+
 const initializeApp = (e) => {
+  updateReferences();
   resizeGrid(e);
   instantiateTrie();
   const form = document.querySelector("#form");
   const toolbar = document.querySelector("#toolbar");
   toolbar.onsubmit = resizeGrid;
   form.onsubmit = handleSubmit;
-  size.addEventListener("change", handleChange);
 };
 
 window.addEventListener("DOMContentLoaded", initializeApp);
