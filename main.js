@@ -18,7 +18,7 @@ const REFERENCES = {
   highlights: "",
 };
 
-export let trie;
+let trie;
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -99,7 +99,7 @@ const handleSubmit = async (e) => {
     }
     matrix.push(row);
   }
-  const { words, steps } = findWords(matrix);
+  const { words, steps } = findWords(matrix, trie);
   const sorted = words.sort((a, b) => b.length - a.length);
   createTable(sorted, list);
   result.style.display = "block";

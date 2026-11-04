@@ -1,5 +1,3 @@
-import { trie } from "./main.js";
-
 const movements = (i, j) => [
   { row: i, column: j + 1, move: "RIGHT" },
   { row: i + 1, column: j + 1, move: "BOTTOM_RIGHT" },
@@ -26,7 +24,7 @@ const addStep = (() => {
   };
 })();
 
-export const findWords = (matrix) => {
+export const findWords = (matrix, trie) => {
   const words = [];
   const map = {};
   const steps = [];
