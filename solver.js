@@ -28,14 +28,15 @@ export const findWords = (matrix, trie) => {
   const words = [];
   const map = {};
   const steps = [];
-  const iterate = (i, j, word, visited) => {
+  const iterate = (i, j, word, node, visited) => {
     if (matrix[i] && matrix[i][j]) {
       if (!visited[`${i}_${j}`]) {
         visited[`${i}_${j}`] = true;
         word += matrix[i][j];
         addStep(i, j, matrix, false, "add", steps);
-        if (trie.find(word).length) {
-          if (trie.contains(word) && !map[word]) {
+        const next = trie.getNode(matrix[i][j], node);
+        if (next) {
+          if (next.end && !map[word]) {
             words.push(word);
             map[word] = true;
             steps[steps.length - 1] = {
@@ -46,7 +47,7 @@ export const findWords = (matrix, trie) => {
           const moves = movements(i, j);
           for (let move of moves) {
             const { row, column } = move;
-            iterate(row, column, word, { ...visited });
+            iterate(row, column, word, next, { ...visited });
           }
           addStep(i, j, matrix, false, "remove", steps);
         } else {
@@ -57,7 +58,7 @@ export const findWords = (matrix, trie) => {
   };
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[i].length; j++) {
-      iterate(i, j, "", {});
+      iterate(i, j, "", trie.root, {});
     }
   }
   return { words, steps };
