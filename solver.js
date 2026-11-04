@@ -26,7 +26,8 @@ const addStep = (() => {
 
 export const findWords = (matrix, trie) => {
   const words = [];
-  const map = {};
+  // A plain object would miss words like "constructor".
+  const seen = new Set();
   const steps = [];
   const visited = matrix.map((row) => row.map(() => false));
   const iterate = (i, j, word, node) => {
@@ -37,9 +38,9 @@ export const findWords = (matrix, trie) => {
         addStep(i, j, matrix, false, "add", steps);
         const next = trie.getNode(matrix[i][j], node);
         if (next) {
-          if (next.end && !map[word]) {
+          if (next.end && !seen.has(word)) {
             words.push(word);
-            map[word] = true;
+            seen.add(word);
             steps[steps.length - 1] = {
               ...steps[steps.length - 1],
               isWord: true,
