@@ -1,5 +1,3 @@
-import { trie } from "./main.js";
-
 const movements = (i, j) => [
   { row: i, column: j + 1, move: "RIGHT" },
   { row: i + 1, column: j + 1, move: "BOTTOM_RIGHT" },
@@ -26,20 +24,23 @@ const addStep = (() => {
   };
 })();
 
-export const findWords = (matrix) => {
+export const findWords = (matrix, trie) => {
   const words = [];
-  const map = {};
+  // A plain object would miss words like "constructor".
+  const seen = new Set();
   const steps = [];
-  const iterate = (i, j, word, visited) => {
+  const visited = matrix.map((row) => row.map(() => false));
+  const iterate = (i, j, word, node) => {
     if (matrix[i] && matrix[i][j]) {
-      if (!visited[`${i}_${j}`]) {
-        visited[`${i}_${j}`] = true;
+      if (!visited[i][j]) {
+        visited[i][j] = true;
         word += matrix[i][j];
         addStep(i, j, matrix, false, "add", steps);
-        if (trie.find(word).length) {
-          if (trie.contains(word) && !map[word]) {
+        const next = trie.getNode(matrix[i][j], node);
+        if (next) {
+          if (next.end && !seen.has(word)) {
             words.push(word);
-            map[word] = true;
+            seen.add(word);
             steps[steps.length - 1] = {
               ...steps[steps.length - 1],
               isWord: true,
@@ -48,18 +49,19 @@ export const findWords = (matrix) => {
           const moves = movements(i, j);
           for (let move of moves) {
             const { row, column } = move;
-            iterate(row, column, word, { ...visited });
+            iterate(row, column, word, next);
           }
           addStep(i, j, matrix, false, "remove", steps);
         } else {
           addStep(i, j, matrix, false, "remove", steps);
         }
+        visited[i][j] = false;
       }
     }
   };
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[i].length; j++) {
-      iterate(i, j, "", {});
+      iterate(i, j, "", trie.root);
     }
   }
   return { words, steps };
